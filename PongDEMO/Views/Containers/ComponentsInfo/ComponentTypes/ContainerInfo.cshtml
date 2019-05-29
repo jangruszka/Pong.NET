@@ -1,0 +1,17 @@
+﻿<div class="text-center">
+    <h2 class=" my-5">Containers</h2>
+</div>
+<p>Containers are parts of SPA which contain non-dynamic data (like text or another containers) or are holders for dynamic components</p>
+<p>
+    Containers should be used for parts of appliacation that are not subject to frequent changes (number of containers in application is constant, data presented DIRECTLY in container (not in nested components!)
+    does not need to be altered dynamically.
+</p>
+<p>
+    Technically, containers are standard .NET Partial Views, pre-rendered server-side,  which are subject to Pong.NET routing.
+</p>
+<p>As they are pre-rendered - for authorization use standard ASP.NET mechanisms <span class="text-muted">(yeaa... I know .NET's Identity is far from being an SPA mechanism. But for now let's just live with one reload on log-in ;))</span> </p>
+<p>Example: This "page" (Components) is a container, nesting another two containers.</p>
+<br /><br />
+<p >Example syntax. Container - a partial view as a subject to routing. </p>
+
+<img src="~/images/codeScreens/containerRoute.png" />

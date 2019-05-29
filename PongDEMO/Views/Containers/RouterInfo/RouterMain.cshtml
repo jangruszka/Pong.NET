@@ -1,0 +1,59 @@
+﻿<div class="text-center">
+    <h2 class=" my-5">Router</h2>
+</div>
+<h4>1. Routes</h4><br />
+<p>
+    In Pong.NET parts of HTML, which are subject to routing (ex. containers) must be wrapped with <b>'route'</b> html tag.
+</p>
+<p>
+    Each route as <b>'path'</b> html attribute which is an adress, to which links will point to.
+</p>
+<p>Routes which are to be loaded interchangeable should have same <b>'routeLevel'</b> attribute value.</p>
+
+<p>A route may have a <b>'levelDefault'</b> attribute. If no route of the routeLevel is loaded, the levelDefault will be loaded.</p>
+
+<img src="~/images/codeScreens/routes.png" />
+
+
+
+
+
+
+
+<br /><br />
+<h4>2. Links</h4>
+<br />
+<p>
+    Links are standard html <b>anchor</b> tags with some modifications.
+</p>
+<p>
+    'href' attribute of a link leads to route's path value, prepended with " #? " (ex. href="#?home" );
+</p>
+<p>
+    Links to routes on the same routeLevel should have html attribute <b>'linkLevel'</b> with the same value as routeLevel.
+    This enable the script to add '<b>active</b>' class to right links on each routeLevel.
+
+</p>
+
+
+<img src="~/images/codeScreens/links.png" />
+
+<br /><br />
+<h4>3. Nested routes</h4><br />
+<p>Routes can be nested (placed in another component/container, which is subject to routing itself)</p>
+<p>
+    Links to nested routes should be created directly. Linking to a nested route will enable all parent routes on the way.
+    When linking to a route nested in another branch of routers (or higher in current branch), remember to add <b>'nested'</b> attribute to the link. It will inform the script to clear open routes.
+    <a href="#?dynamicComponents" nested linkLevel="componentTypes">Example</a>
+</p>
+<img src="~/images/codeScreens/nestedRoute.png" />
+
+
+<br /><br/>
+<h4 >4. Better UX tip</h4>
+<p >To avoid displaying of undesired (just for a brief moment before the Router is loaded), 
+   you are advised to add <b>style="display:none;"</b> to you main <b>body</b> tag. It will prevent display
+    of your app before the router is loaded.
+    </p>
+
+<img src="~/images/codeScreens/bodyDisplayNone.png" />

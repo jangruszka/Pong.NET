@@ -1,0 +1,135 @@
+﻿<div class="text-center">
+    <h2 class=" my-5">Straight Methods</h2>
+</div>
+
+<p>
+   Straight Methods are alternative to Split Methods.
+    They are based on a common practice in ASP.NET web development of dynamically appending partial views.
+    Yet, in Pong.NET library there are some improvements making this approach more React-like. 
+</p>
+
+<h4>1. Straight Methods concept</h4><br />
+<p> Straight get methods <b>are not divided</b> into Core and Higher Order Methods. One Straight method returns only once component </p>
+<p>Controller-wise they are <b>normal MVC methods returning a single view</b>. Therefore, performance-wise they are faster than Split Methods, yet far less granular.</p>
+
+<br/>
+<h4>2. Dispatching with HTML tag </h4>
+<p>This is a React-like way of loading a component. Use a <b>HTML tag "component"</b> with two attributes: <br />
+    <b>1. method</b> - which points to MVC controller method responsible for returning the view <br />
+    <b>2. props</b> - a string of primitive key value pairs corresponding to MVC method's parameters, which will be passed as arguments  </p>
+
+<div class="bg-light">
+    <h5>Example:</h5>
+    <p>Theese are 2 example components loaded using HTML tag and Straight Get Method</p>
+    <img src="~/images/codeScreens/straightHTML.png" />
+
+    <div class="row">
+        <div class="col-lg-3 m-3">
+            <component props='name:Johnny,profession:ASP.NET developer,desc:I like building apps!' method="/UserCard/UserCardRender"></component>
+        </div>
+        <div class="col-lg-3 m-3">
+            <component props='name:Mary,profession:QA Engineer,desc:I find bugs!' method="/UserCard/UserCardRender"></component>
+        </div>
+    </div>
+
+
+</div>
+<br />
+<h4>3. Changing props dynamically and dynamic re-rendering</h4>
+<p>In modern front-end frameworks (ex. React) a change of props often results in automatic re-render of a given component. So does in Pong.NET.</p>
+<p><b>Changing of props will result in a automatic re-render of the component</b>. </p>
+<p>Changing of props is done with <b>setProp()</b> function, which takes three arguments: <b>Component selector</b>, <b>Key</b>, <b>Value</b> </p>
+<p>Value of selected component props can be extracted with <b>getProp()</b>, taking two argument: <b>Component selector</b> and <b>Key</b>. </p>
+<div class="bg-light">
+    <h5>Example:</h5>
+    <p>Below you can see an example user card rendered with some mock data. Using inputs you can call a function, which will do nothing but execute setProps(). 
+    The re-render will be done automatically by Pong.NET.
+    </p>
+
+    <component id="exampleCard" props='name:Example,profession:Example,desc:Example ' method="/UserCard/UserCardRender"></component>
+  <div><h6 class="text-center">Edit card</h6></div>
+    <div class="row my-4 px-4">
+        <input type="text" id="cardNameInp" class="form-control col-lg-3" placeholder="Name*" />
+        <input type="text" id="cardProfInp" class="form-control col-lg-3" placeholder="Profession*" />
+        <input type="text" id="cardDescInp" class="form-control col-lg-3" placeholder="Description*" />
+        <button class="btn btn-primary btn-sm col-lg-3" id="cardChangeBtn">Change card!</button>
+    </div>
+    <p class="small text-muted">* required</p>
+
+    <img src="~/images/codeScreens/setProps.png" />
+
+
+</div>
+<br /><br />
+<h4>4. Dispatching with JS function</h4><br />
+<p>Component rendered using Straight Methods can also be loaded using JS.</p>
+<p>To do so use <b>dispatchStraight()</b> function, taking three arguments:
+    <b>MvcMethod</b>, <b>ParentElementSelector</b> and <b>Props</b>.</p>
+
+<p>Props in this method can be passed both as <b>string with primitive key:value pairs</b> (the same syntax as in HTML attribute) 
+    and as a <b>JavaScript object</b></p>.
+
+<div class="bg-light">
+    <h5>Example:</h5>
+    <p>
+        In the following example by clicking a "Dispatch" button, a dispatchStraight() function will be fired,
+
+        rendering instance of component with data passed by inputs below.
+
+        You can dispatchStraight() as many independent components as you desire.
+    </p>
+
+    <img src="~/images/codeScreens/dispatchStraightJS.png" />
+
+    <div class="row my-4 px-4">
+        <input type="text" id="cardNameInp2" class="form-control col-lg-3" placeholder="Name" />
+        <input type="text" id="cardProfInp2" class="form-control col-lg-3" placeholder="Profession" />
+        <input type="text" id="cardDescInp2" class="form-control col-lg-3" placeholder="Description" />
+        <button class="btn btn-success btn-sm col-lg-3" id="dspStrBtn">Dispatch!</button>
+    </div>
+
+
+</div>
+
+
+<div id="dspStrHolder" ></div>
+
+
+
+
+<script>
+    $("#cardChangeBtn").click(function () {
+
+
+        var name = $("#cardNameInp").val();
+        if (name == "")  return;
+        var prof = $("#cardProfInp").val();
+        if (prof == "") return;
+        var desc = $("#cardDescInp").val();
+        if (desc == "") return;
+
+        setProp("#exampleCard", "name", name);
+        setProp("#exampleCard", "profession", prof);
+        setProp("#exampleCard", "desc", desc);
+
+    });
+
+    $("#dspStrBtn").click(function () {
+        var name = $("#cardNameInp2").val();
+        var prof = $("#cardProfInp2").val();
+        var desc = $("#cardDescInp2").val();
+
+        var data = {
+            name: name,
+            profession: prof,
+            desc: desc
+        };
+  
+        dispatchStraight("/UserCard/UserCardRender", "#dspStrHolder", data);
+
+    });
+
+   
+
+
+</script>

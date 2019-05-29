@@ -1,0 +1,128 @@
+﻿<div class="bg-light">
+    <h5>Example: </h5>
+    <p class="text-muted small" >Caution: In order to experience this example a connection to DB is required.</p>
+
+
+
+
+    <div class="row">
+        <div id="backendExample1Holder" class="col-lg-6">
+
+            <!-- here go components-->
+
+        </div>
+        <div class="col-lg-6 text-center">
+            <h5>New Post</h5>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Nick</label>
+                <input type="text" class="form-control" id="newPostNick" placeholder="Nick">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Email address</label>
+                <input type="email" class="form-control" id="newPostMail" placeholder="name@example.com">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Post content</label>
+                <textarea class="form-control" id="newPostContent" rows="3"></textarea>
+            </div>
+            <button id="savePostBtn" class="btn btn-primary">Save Post</button>
+        </div>
+    </div>
+
+    <p>
+        So to start with: I want to render here a number of comment-like posts from my database (simple model: just id, nick, mail and content).
+        <br />
+        Therefore I want to reach to a Higher Order Method, which will extract all posts from the DB. I also need to reach
+        to a Core Method to render them independently.
+    </p>
+    <img src="~/images/codeScreens/backExampleGet.png" />
+
+    <p>
+        Moreover, I want to add more records to the Posts table using a just a very simple, standard HttpPost methods and <b>update the posts already rendered</b>
+    </p>
+
+
+    <p>
+        To update rendered posts, after I successfully save new post to database, I <b>I call dispatchGet() again. It keeps track on components and re-renders only what is new or is deleted.</b>
+    </p>
+    <img src="~/images/codeScreens/postWithDispatchGet.png" />
+
+    <p>
+        Next, each post has a "CAPITALIZE" button. It runs simple methods, which changes relevant database record's content to capital
+        letters. To update my view without re-rendering every post component I choose to use <b>updateCoreGet()</b>
+        (bear in mind that dispatchGetReload() would do the job aswell, but it would re-render all posts)
+    </p>
+    <img src="~/images/codeScreens/updatecoreget.png" />
+
+    <h4>3. Nesting </h4>
+    <p>
+        Granular components are meant to be bricks building bigger structures. To achieve this effect components are usually nested one inside another (ex. React).
+        In Pong.NET every component is a tiny partial view loaded dynamically - it's just html and more partial views could be appended inside.
+    </p>
+    <p>In the given example there are icon with numbers depicting saved likes and dislikes of given post</p>
+    <p>To achieve the goal of hight granularity, <b>Likes counters are separate components</b>, rendered inside each instance of Post component </p>
+    <p><b>Likes counters</b> are similar component to Posts - they have their own model and their core methods, rendering a view with model</p>
+    <p>
+        Likes counters are connected to posts by a foreign key, which is used by GetPostLikes() Higher Order Method. This special unique identifier is used as an itemKey,
+        and my front-end JS code has access to itemKey of every Post intance.
+    </p>
+
+
+    <img src="~/images/codeScreens/likesBackend.png" />
+    <br /><br />
+    <img src="~/images/codeScreens/postsKeys.png" />
+    <br /><br />
+    <img src="~/images/codeScreens/getLikesJS.png" />
+
+    <p> Caution: whenever I update parent component (here its Post), I must update it's children(here: Likes) by calling dispatchGet() or another Pong.NET method</p>
+
+</div>
+            <script>
+             
+                dispatchGet('/Post/GetAllPosts', '/Post/PostCoreGet', "#backendExample1Holder", null);
+
+                $(".post").each(function () {
+                    var id = $(this).parent().attr('itemKey');
+                    var selector = "[parentKey='" + id + "']";
+      
+                  dispatchGet('/Likes/GetPostLikes', '/Likes/LikesCoreGet', selector, { postId: id });
+                });
+                
+
+
+                $("#savePostBtn").click(function () {
+                    var nick = $("#newPostNick").val();
+                    var email = $("#newPostMail").val();
+                    var content = $("#newPostContent").val();
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Post/AddPost',
+                        data: { nick: nick, email: email, content: content },
+                        success: function (data) {
+                            if (data === true) {
+
+                                dispatchGet('/Post/GetAllPosts', '/Post/PostCoreGet', '#backendExample1Holder', null);
+
+                                $(".post").each(function () {
+                                    var id = $(this).parent().attr('itemKey');
+                                    var selector = "[parentKey='" + id + "']";
+                                    
+                                    dispatchGet('/Likes/GetPostLikes', '/Likes/LikesCoreGet', selector, { postId: id });
+                                });
+
+                            }
+                        }
+                    });
+
+                });
+
+            </script>
+
+
+
+
+
+
+
+

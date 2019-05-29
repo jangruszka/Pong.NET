@@ -1,0 +1,29 @@
+﻿
+@model List<Order>
+@{ 
+    Layout = null;
+}
+<div class="row">
+    @foreach (var o in Model)
+    {
+        <div class="card col-lg-4" >
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTryeeBukNV1pkK-_sixXEMr8iUI1RqImhJsQLhQ-6lepnAqk6FkQ" class="card-img-top" alt="...">
+            <div class="card-body">
+
+                <h5>Product info:</h5>
+
+                <p class="card-text">Product: @o.ProductName</p>
+                <p class="card-text">Color: @o.Color</p>
+                <p class="card-text">Price: @o.Price  $</p>
+
+                <h5>Delivery info: </h5>
+                <p class="card-text">Name: @o.UserName</p>
+                <p class="card-text">Adress: @o.Adress</p>
+                <p class="card-text">Mail: @o.UserMail</p>
+                <p class="card-text">method: @o.DeliveryMethod</p>
+
+            </div>
+        </div>
+
+    }
+</div>

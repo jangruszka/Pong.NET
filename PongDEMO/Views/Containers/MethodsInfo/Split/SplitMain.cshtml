@@ -1,0 +1,102 @@
+﻿<div class="text-center">
+    <h2 class=" my-5">Split Methods</h2>
+</div>
+
+<p>Split Methods are the core concept of this library. They main goal of Split Methods is to 
+    return a number of granular, independent components appended without reloading whole page, instead of returning one view per method </p>
+
+<h4>1. Core Methods concept</h4><br />
+<p>
+    In order to achieve high granularity of components (by which I mean high independence in being rendered, even when a number of instances of same component has to be created) Pong.NET requires you to build simple methods which
+    <b>  render only one instance of the component </b> at time, binding it to its own model.
+</p>
+<p>
+    Theese methods are called <b>'Core Methods'</b>.
+</p>
+<p>Core Methods <b>do not perform any complex logical operations - they just build a model</b> based on  model record's unique identifier in a DB (which is also received by the Core Method as an argument). </p>
+<img src="~/images/codeScreens/coreMethods.png" />
+<p>Please bear in mind: the argument for Core Method has to be named <b>itemKey</b>. </p>
+
+<br />    <br />
+@*<p class="font-weight-bold">As you see, data passed as arguments is different and it comes from different sources. Therefore both approaches are handled slightly different </p>
+<div class="text-center">
+    <h5>More about:</h5>
+    <a href="#?backendmethods" class="btn btn-outline-primary m-2" linkLevel="methodTypes">Back-end filled components</a>
+    <a class="btn btn-outline-primary m-2" linkLevel="methodTypes">Front-end filled components</a>
+</div>*@
+
+
+
+
+<h4>2. Higher Order Methods concept</h4><br />
+<p>
+    Decision, which pieces of data from database are to be rendered as components, and how many instances of components will be rendered
+    is not made in a method, which renders a single components (a Core Method). It is made in a <b>Higher Order Method</b>.
+</p>
+
+<p>
+    Higher Order Methods <b>do not render views</b> and they <b>do not return model objects</b> or collections of model obejcts.
+    Instead of model objects, <b>they return arrays of unique identifiers of those objects in a database (ex. Id) </b>.<br />
+</p>
+<p>Rendering views and binding models is job of Core Method and it is based on what Higher Order Methods return. </p>
+<p class="text-muted">When it comes to complex, multi-level models - operations like EF's 'includes' or setting [NotMapped] / virtual properties have to be done in Core Method.
+    You might even have multiple core methods for such purposes. But if the highest possible granularity is priority - Core Methods should be kept simple.
+    Instead of building complex models bound to views, consider nesting components.
+    If high granularity is not a priority at all - consider using Straight Get Methods.
+    </p>
+
+
+<img src="~/images/codeScreens/higherOrderMethod.png" />
+<br /><br /><br />
+<h4>3. Dispatching Split Methods</h4><br />
+<p>
+    Dispatching of get requests for the controller takes place in JavaScript (remember,you also need jQuery!).
+</p>
+<p>
+    To run a Higher Order Method and make it result in rendering of numerous independent, granular components you use Pong.NET's <b>dispatchGet()</b> function.
+</p>
+
+<p>
+    Function <b>dispatchGet()</b> takes four arguments: <b>higherOrderMethod</b>, <b>coreMethod</b>, <b>parentHtmlElementSelector</b>(jQuery selector of Id, Class or Custom Attribute), <b>higherOrderMethodPayload</b>. <br />
+    higherOrderMethodPayload is a JS object with key:value pairs corresponding with higherOrderMethod paramaters.
+</p>
+
+<p>
+    dispatchGet() not only renders results of controller method, but also <b>keeps track of the changes!</b> If you call it again,
+    it will <b>automatically check, if there are new records (compared to already rendered ones), or some records have been removed</b>
+    and adjust rendered components independently, <b>without reloading everything!</b>
+</p>
+<p>
+    If changes in records of a given table are more extensive, call <b>dispatchGetReload()</b> - it re-renders all of returned component instances.
+</p>
+<p>
+    When making changes in database record representing a single, already rendered component, you might not need to re-render everything with dispatchGetReload().
+    In this scenario you might use <b>updateCoreGet()</b>,
+    which skips Higher Order Method and goes directly to Core Method - rendered components have
+    html attribute <b>'itemKey'</b>, taken as an argument by CoreMethod.  <br />
+    This method takes three arguments: <b>CoreMethod</b>, <b>ParentElementSelector</b>, <b>itemKey</b>.
+</p>
+
+<p>
+    If you want to render new component with data from DB with a known itemKey, use <b>dispatchCoreGet()</b>,
+    which takes as arguments as function mentioned above.
+</p>
+
+
+@Html.Partial("~/Views/Containers/MethodsInfo/Split/ExampleDispatchGet.cshtml")
+
+
+
+
+
+
+
+@*<h4>4. Dynamic MVC Views (non-granular!)</h4><br />
+    <p>Dynamic MVC views are returned by typical MVC methods they are appended dynamically.</p>
+    <p>It's not something unusual for modern MVC development, yet Pong.NET has its syntax for this process.</p>
+    <p>No Core Methods / Higher Order Methods structure is neccesary - it's good old MVC</p>
+    <p><b>Caution!</b> Standard MVC views are <b>NOT GRANULAR</b>. If you want to output multiple instances of same data pattern and perform CRUDs on them, granular components might be better option </p>
+    <p>But if high granularity is not a top priority and you want you code to be leaner, faster and you need good control over a very complex model - go for MVC  </p>
+    <p>MVC view is rendered using <b>dispatchView()</b> method, which takes three arguments - <b>MVC Method</b>, <b>ParentElementSelector</b>, <b>Payload(arguments of MVC method as JS object)</b></p>*@
+
+@*@Html.Partial("~/Views/Containers/MethodsInfo/BackendBased/BackendExampleDispatchView.cshtml")*@

@@ -1,0 +1,34 @@
+﻿<div>
+    <h2>Methods</h2>
+    <p>In Pong.NET granular components can be rendered using two types of Method: </p>
+    <ul>
+        @*<li class="my-4">Containers <a href="#?containers" linkLevel="componentTypes" class="btn btn-sm btn-outline-primary">More!</a> </li>
+            <li class="my-4"><b>Dynamic components</b> <a href="#?dynamicComponents" linkLevel="componentTypes" class="btn btn-sm btn-outline-primary">More!</a></li>*@
+        <li>Split Get - core idea of Pong.NET library, resulting on rendering multiple independent, granular components <a href="#?splitmethods" linkLevel="methodTypes" class="btn btn-sm btn-outline-primary">More!</a></li>
+        <li>Straight Get - approach closer to typical MVC web development, resulting in rendering of one component per method <a href="#?straightmethods" linkLevel="methodTypes" class="btn btn-sm btn-outline-primary">More!</a></li>
+
+    </ul>
+    <p>
+        Each approach has its own methods for creating/updating components.
+    </p>
+
+
+    <hr />
+
+
+
+</div>
+<div>
+    <route path="splitmethods" routeLevel="methodTypes">
+        @Html.Partial("~/Views/Containers/MethodsInfo/Split/SplitMain.cshtml")
+
+    </route>
+    <route path="straightmethods" routeLevel="methodTypes">
+        @Html.Partial("~/Views/Containers/MethodsInfo/Straight/StraightMethodsMain.cshtml")
+    </route>
+    @*<route path="dynamicComponents" routeLevel="methodTypes">
+        @Html.Partial("~/Views/Containers/ComponentsInfo/ComponentTypes/DynamicComponentsInfo.cshtml")
+    </route>*@
+
+
+</div>

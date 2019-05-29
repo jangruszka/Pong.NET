@@ -1,0 +1,25 @@
+﻿
+
+
+<div>
+    <h2>Components</h2>
+    <p>In Pong.NET independent fragments of SPA are divided into 2 groups (latter of which contains another two sub-groups)</p>
+    <ul>
+        <li class="my-4">Containers <a  href="#?containers" linkLevel="componentTypes" class="btn btn-sm btn-outline-primary">More!</a> </li>
+        <li class="my-4"><b>Dynamic components</b> <a  href="#?dynamicComponents" linkLevel="componentTypes" class="btn btn-sm btn-outline-primary">More!</a></li>
+
+    </ul>
+
+
+    <hr />
+</div>
+<div>
+    <route path="containers" routeLevel="componentTypes">
+        @Html.Partial("~/Views/Containers/ComponentsInfo/ComponentTypes/ContainerInfo.cshtml")
+    </route>
+    <route path="dynamicComponents" routeLevel="componentTypes">
+        @Html.Partial("~/Views/Containers/ComponentsInfo/ComponentTypes/DynamicComponentsInfo.cshtml")
+    </route>
+
+
+</div>

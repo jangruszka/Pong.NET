@@ -1,0 +1,46 @@
+﻿@model Post
+@{ 
+    Layout = null;
+}
+<div class="card post" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Nick</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@Model.Email</h6>
+        <p class="card-text">@Model.Content</p>
+        @*<a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a>*@
+        <button class="capitalizeBtn btn btn-primary btn-sm"><span class="small">CAPITALIZE <i class="fas fa-arrow-up"></i></span></button>
+    <div parentKey="@Model.Id" ></div>   
+    </div>
+</div>
+
+<script>
+
+    $(".capitalizeBtn").unbind('click');
+    $(".capitalizeBtn").bind('click', function () {
+        var itemKey = $(this).parent().parent().parent().attr('itemKey');
+        var content = $(this).prev().html();
+        var contentToSend = content.toUpperCase();
+        $.ajax({
+            type: "POST",
+            url: '/Post/EditPost',
+            data: { id: itemKey, content: contentToSend },
+            success: function (data) {
+                if (data === true) {
+                    updateCoreGet('/Post/PostCoreGet', "#backendExample1Holder", itemKey);
+
+                    //keeping track of nested components.
+                    $(".post").each(function () {
+                        var id = $(this).parent().attr('itemKey');
+                        var selector = "[parentKey='" + id + "']";
+
+                        dispatchGet('/Likes/GetPostLikes', '/Likes/LikesCoreGet', selector, { postId: id });
+                    });
+                }
+
+            }
+        });
+    });
+
+
+</script>

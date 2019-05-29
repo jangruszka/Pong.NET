@@ -1,0 +1,27 @@
+﻿<div class="text-center">
+    <h2 class=" my-5">Dynamic components</h2>
+</div>
+<p>Dynamic components are a core feature of modern front end-frameworks (React, Vue, Angular)</p>
+<p>
+    In Pong.NET dynamic components are reusable parts of HTML, which could be rendered in any moment and any number and filled with dynamically with data.
+</p>
+<p>
+    Dynamic components are not pre-rendered in agregate. They are rendered dynamically independently, one at a time.
+</p>
+<p>Technically, each component contains inside a separate Partial View rendered server side, yet appended dynamically by Pong.NET's javascript</p>
+
+<p>Dynamic components can be rendered using two types of Methods - <b>Split Gets</b> and <b>Straight Gets</b>  </p>
+
+<p>
+    Compontents are rendered as a 'component' HTML tag. They point to the core method rendering each component's inner html. 
+    Furthermore, depending whether they are rendered using Split or Straight get method, they have props or itemKey attributes respectively. Find more <a class="btn btn-sm btn-outline-primary" href="#?methods">HERE</a>
+</p>
+
+<br /><br />
+<p class="">Example: Rendering a component by using HTML tag and passing props to a Straight Get Method. Props are key:value pairs which are arguments for the method returning component's inner Html.
+    Any change of props results in an immediate, automatic re-render of the component. </p>
+<img  src="~/images/codeScreens/componentTagProps.png" />
+<br /><br /><br />
+<p class="">Example: Component rendered by script with data from backend provided by a Split Get Method. itemKey is a unique identifier (ex. Id) of component's model object in database. 
+   ItemKey attribute is provided by back-end and its crucial for front-end Pong.Net script for a proper management of component re-rendering. </p>
+<img src="~/images/codeScreens/componentTagItemKey.png" />
